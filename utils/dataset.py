@@ -8,7 +8,6 @@ from PIL import Image
 import os
 import torchvision.transforms.functional as TF
 import pandas as pd
-import cv2
 import random
 from pathlib import Path
 from torchvision.transforms.functional import resize
@@ -302,6 +301,7 @@ class ODERegressionCSVDataset(Dataset):
             frames = []
             for frame_index in frame_indices:
                 frame_path = os.path.join(path, image_files[frame_index])
+                import cv2
                 frame = cv2.imread(frame_path, cv2.IMREAD_COLOR)
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 frames.append(frame)
