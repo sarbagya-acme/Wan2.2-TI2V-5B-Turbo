@@ -11,7 +11,6 @@ import pandas as pd
 import cv2
 import random
 from pathlib import Path
-import decord
 from torchvision.transforms.functional import resize
 from torch.utils.data.distributed import DistributedSampler
 
@@ -290,6 +289,7 @@ class ODERegressionCSVDataset(Dataset):
 
         if path.endswith(".mp4") or path.endswith(".mkv"):
             path = Path(path)
+            import decord
             video_reader = decord.VideoReader(uri=path.as_posix())
             frames = torch.tensor(
                 video_reader.get_batch(frame_indices).asnumpy()
