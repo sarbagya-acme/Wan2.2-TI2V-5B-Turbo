@@ -4,7 +4,6 @@ import torch
 from utils.wan_wrapper import WanDiffusionWrapper
 from utils.scheduler import SchedulerInterface
 import torch.distributed as dist
-from utils.dataset import masks_like
 
 class BidirectionalTrainingPipeline(torch.nn.Module):
     def __init__(
@@ -65,6 +64,8 @@ class BidirectionalTrainingPipeline(torch.nn.Module):
                 dtype=torch.int64) * current_timestep
             
             if "2.2" in self.generator.model_name:
+                from utils.dataset import masks_like
+
                 mask1, mask2 = masks_like(noisy_image_or_video, zero=True)
                 mask2 = torch.stack(mask2, dim=0) # torch.Size([1, 31, 48, 44, 80])
                 noisy_image_or_video = (1. - mask2) * wan22_image_latent + mask2 * noisy_image_or_video
